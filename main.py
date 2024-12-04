@@ -1,14 +1,15 @@
-# Thisbuy=Nonemple Python script.
+
 from enum import Enum
 import numbers
 import matplotlib.pyplot as plt
 import decimal
 import numpy as np
 import tkinter as tk
+import taipy
+import Keras
 
 # TESTLINE JAKOB GIT
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
 
 class Currencies(Enum):
     BTC = "BTC"
@@ -158,16 +159,24 @@ def main():
     rs3 = []
     rs4 = []
     reason1 = Reasons.PNL
-    rs1.append(reason1)
     reason2 = Reasons.FOMC
-    rs2.append(reason2)
     reason3 = Reasons.PCE
-    rs3.append(reason3)
     reason4 = Reasons.CPI
+    #-----------------------------------------------------------------
+    # rsX.append = grund and liste rsX annhängen
+    rs1.append(reason1)
+    rs1.append(reason3)
+
+    rs2.append(reason2)
+
     rs3.append(reason4)
+    rs3.append(reason3)
+
     rs4.append(reason4)
+    #----------------------------------------------------------
     c1 = Currencies("BTC")
     c2 = Currencies("ETH")
+
     # trade1 ist BTC trade mit grund PNL, profit von 5
     trade1 = Trade(c1, 15, 25, rs1)
     # trade 2 ist BTC trade mit grund FOMC, profit von 3
@@ -177,12 +186,16 @@ def main():
     # trade4 ist ETH trade mit grund CPI, positives outcome
     trade4 = Trade(c2, 12, 20, rs4)
     trade5 = Trade(c2,14,22, rs2)
+    trade6 = Trade(c2, 12,15, rs1)
+
+    # Wenn neuer Trade erstellt: trades.append(tradeX)
     trades = []
     trades.append(trade1)
     trades.append(trade2)
     trades.append(trade3)
     trades.append(trade4)
     trades.append(trade5)
+    trades.append(trade6)
 
     testuser = User(trades)
 
