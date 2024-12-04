@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 import decimal
 import numpy as np
 import tkinter as tk
-import taipy
-import Keras
+
 
 # TESTLINE JAKOB GIT
 
@@ -154,6 +153,7 @@ class User:
 
 
 def main():
+    # rs1 - rs4 sind leere Listen für Gründe
     rs1 = []
     rs2 = []
     rs3 = []
@@ -199,8 +199,14 @@ def main():
 
     testuser = User(trades)
 
-    testuser.displaybytrades()
-    #testuser.displaybyprofit()
+
+    #Immer eins von beidem Auskommentieren mit # vor der Zeile und dann anderes # löschenn
+
+    # displaybytrades zeigt an wie viele Trades mit welchem Grund gemacht wurden
+    #testuser.displaybytrades()
+
+    # displaybyproifit zeit den NET Profit/Verlust von allen Trades mit einem Grund an
+    testuser.displaybyprofit()
 
 
     for trade in testuser.trades:
@@ -209,19 +215,6 @@ def main():
 
 
 
-    #print(testuser.rPNL)
-    """
-    
-    window = tk.Tk()
-    window.geometry("700x500")
-    window.title("Trade registration")
-    #
-    selected = tk.StringVar()
-    selected.set(Currencies.BTC.value)
-
-    #button1 = tk.Button(top, text="hallo",)
-    window.mainloop()
-    """
 
 
 
@@ -232,20 +225,7 @@ def main():
 
 
 
-""" rs = []
-   rs.append(Reasons("PNL"))
-   tds = []
-   t1 = Trade("BTC", 200, 220, rs )
-   tds.append(t1)
-   u1 = User(tds)
-    options = [
-        "BTC"
-        "ETH"
-        "USDT"
-        "BNB"
-        "SOL"
-    ]
-   """
+
 
 if __name__ == '__main__':
     main()
@@ -254,11 +234,7 @@ if __name__ == '__main__':
 
 
 
-"""
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
-"""
+
 # Press the green button in the gutter to run the script.
 
 #hihihi
