@@ -52,9 +52,6 @@ class Trade:
 
     def getinfo(self):
         print("Currency: " + str(self.currency.value) + ", Reasons: " + str(list(reason.value for reason in self.reasons)) + ",  buy price: " + str(self.buy_price) + ", sell price: " + str(self.sell_price) + ", Profit/Loss: "+str(self.getprofit()))
-        #print(list(reason.value for reason in self.reasons))
-        #print(str(reason.value for reason in self.reasons))
-        # " Reasons: " + str(e.value for e in self.reasons) +
 
 
 
