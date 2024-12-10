@@ -1,4 +1,3 @@
-
 from enum import Enum
 import numbers
 import matplotlib.pyplot as plt
@@ -17,11 +16,13 @@ class Currencies(Enum):
     BNB = "BNB"
     SOL = "SOL"
 
+
 class Reasons(Enum):
     PNL = "PNL"
     PCE = "PCE"
     CPI = "CPI"
     FOMC = "FOMC"
+
 
 class Trade:
     ispositive = False
@@ -30,7 +31,7 @@ class Trade:
     # buy price, sell price, stop loss, currency, take profit, margin, leverage
     # bei trade ohne stop-loss --> stop-loss == liquidation
     # bei trade ohne take profit --> take-profit == realer profit
-    def __init__(self,currency, buy_price, sell_price, reasons : Reasons):
+    def __init__(self, currency, buy_price, sell_price, reasons: Reasons):
         if not isinstance(currency, Currencies):
             raise TypeError("currency must be BTC/ETH/USDT/BNB/SOL")
 
@@ -44,25 +45,27 @@ class Trade:
         self.buy_price = buy_price
         self.sell_price = sell_price
         self.reasons = reasons
-        self.ispositive = True if(buy_price < sell_price) else False
+        self.ispositive = True if (buy_price < sell_price) else False
 
     def getprofit(self):
         difference = self.sell_price - self.buy_price
         return difference
 
     def getinfo(self):
-        print("Currency: " + str(self.currency.value) + ", Reasons: " + str(list(reason.value for reason in self.reasons)) + ",  buy price: " + str(self.buy_price) + ", sell price: " + str(self.sell_price) + ", Profit/Loss: "+str(self.getprofit()))
+        print("Currency: " + str(self.currency.value) + ", Reasons: " + str(
+            list(reason.value for reason in self.reasons)) + ",  buy price: " + str(
+            self.buy_price) + ", sell price: " + str(self.sell_price) + ", Profit/Loss: " + str(self.getprofit()))
 
-
-
-    #zukünftige funktion: was war der höchste kurs zwischen entry und exit? tracken über alle bzw. viele trades
-    #dafür nötig:
-    #funktion getpeak (class Trade) : kurs zwischen timestamp entry und timestamp exit pullen und höchsten punkt berechnen und verhältniss zu entry point
-    #getaveragepeak (class User) : alle getpeaks durch anzahl verglichener trades teilen
+    # zukünftige funktion: was war der höchste kurs zwischen entry und exit? tracken über alle bzw. viele trades
+    # dafür nötig:
+    # funktion getpeak (class Trade) : kurs zwischen timestamp entry und timestamp exit pullen und höchsten punkt berechnen und verhältniss zu entry point
+    # getaveragepeak (class User) : alle getpeaks durch anzahl verglichener trades teilen
 
     # funktion: wie gut sind die trades zu jeder uhrzeit? (zu jeder session)
     # funktion: winrate
     # funktion: average holding time
+
+
 class User:
     rPNL = 0
     rPCE = 0
@@ -71,7 +74,6 @@ class User:
 
     byprofit = []
 
-
     aPNL = 0
     aPCE = 0
     aCPI = 0
@@ -79,15 +81,12 @@ class User:
 
     bytrades = []
 
-    bars = ["PNL", "PCE","CPI","FOMC"]
+    bars = ["PNL", "PCE", "CPI", "FOMC"]
 
-
-
-    def __init__(self, trades : Trade):
+    def __init__(self, trades: Trade):
         self.trades = trades
         self.getreadskillbyprofit()
         self.getreadskillbytrades()
-
 
     def new_trade(self, trade):
         if isinstance(trade, Trade):
@@ -108,7 +107,7 @@ class User:
                 elif reason == Reasons.FOMC:
                     self.rFOMC += trade.getprofit()
 
-        self.byprofit = [self.rPNL, self.rPCE, self.rCPI,self.rFOMC]
+        self.byprofit = [self.rPNL, self.rPCE, self.rCPI, self.rFOMC]
 
     def getNetPNL(self):
         net = 0
@@ -116,20 +115,19 @@ class User:
             net += trade.getprofit()
         return net
 
-
     def getreadskillbytrades(self):
         for trade in self.trades:
             for reason in trade.reasons:
                 if reason == Reasons.PNL:
-                    self.aPNL += 1 #if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
+                    self.aPNL += 1  # if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
                 elif reason == Reasons.CPI:
-                    self.aCPI += 1 #if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
+                    self.aCPI += 1  # if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
                 elif reason == Reasons.PCE:
-                    self.aPCE += 1 #if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
+                    self.aPCE += 1  # if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
                 elif reason == Reasons.FOMC:
-                    self.aFOMC += 1 #if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
+                    self.aFOMC += 1  # if trade.getprofit() > 0 else -1 if trade.getprofit() < 0 else 0
 
-        self.bytrades = [self.aPNL, self.aPCE, self.aCPI,self.aFOMC]
+        self.bytrades = [self.aPNL, self.aPCE, self.aCPI, self.aFOMC]
 
     def displaybytrades(self):
         plt.bar(self.bars, self.bytrades, align='center', width=0.5, color='b', label='data')
@@ -147,8 +145,8 @@ class User:
         plt.legend()
         plt.show()
 
-    def best_reason(self,trades):
-        best = max(self.rPNL, self.aPCE, self.aFOMC,self.aCPI)
+    def best_reason(self, trades):
+        best = max(self.rPNL, self.aPCE, self.aFOMC, self.aCPI)
         return best
 
 
@@ -162,7 +160,7 @@ def main():
     reason2 = Reasons.FOMC
     reason3 = Reasons.PCE
     reason4 = Reasons.CPI
-    #-----------------------------------------------------------------
+    # -----------------------------------------------------------------
     # rsX.append = grund and liste rsX annhängen
     rs1.append(reason1)
     rs1.append(reason3)
@@ -173,7 +171,7 @@ def main():
     rs3.append(reason3)
 
     rs4.append(reason4)
-    #----------------------------------------------------------
+    # ----------------------------------------------------------
     c1 = Currencies("BTC")
     c2 = Currencies("ETH")
 
@@ -185,8 +183,8 @@ def main():
     trade3 = Trade(c2, 18, 30, rs3)
     # trade4 ist ETH trade mit grund CPI, positives outcome
     trade4 = Trade(c2, 12, 20, rs4)
-    trade5 = Trade(c2,14,22, rs2)
-    trade6 = Trade(c2, 12,15, rs1)
+    trade5 = Trade(c2, 14, 22, rs2)
+    trade6 = Trade(c2, 12, 15, rs1)
 
     # Wenn neuer Trade erstellt: trades.append(tradeX)
     trades = []
@@ -199,52 +197,28 @@ def main():
 
     testuser = User(trades)
 
-
-    #Immer eins von beidem Auskommentieren mit # vor der Zeile und dann anderes # löschenn
+    # Immer eins von beidem Auskommentieren mit # vor der Zeile und dann anderes # löschenn
 
     # displaybytrades zeigt an wie viele Trades mit welchem Grund gemacht wurden
-    #testuser.displaybytrades()
+    # testuser.displaybytrades()
 
     # displaybyproifit zeit den NET Profit/Verlust von allen Trades mit einem Grund an
     testuser.displaybyprofit()
-
 
     for trade in testuser.trades:
         trade.getinfo()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     main()
 
-
-
-
-
-
 # Press the green button in the gutter to run the script.
 
-#hihihi
-#huhuhu
-#hohoho
-#hahaha
-#hehehee
-
-
-
+# hihihi
+# huhuhu
+# hohoho
+# hahaha
+# hehehee
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
