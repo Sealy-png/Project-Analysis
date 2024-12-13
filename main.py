@@ -1,9 +1,7 @@
-from enum import Enum
 import numbers
+from enum import Enum
+
 import matplotlib.pyplot as plt
-import decimal
-import numpy as np
-import tkinter as tk
 
 
 # TESTLINE JAKOB GIT
