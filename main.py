@@ -3,6 +3,8 @@ from enum import Enum
 
 import matplotlib.pyplot as plt
 
+import mexc
+
 
 # TESTLINE JAKOB GIT
 
@@ -65,6 +67,7 @@ class Trade:
 
 
 class User:
+    trades = []
     rPNL = 0
     rPCE = 0
     rCPI = 0
@@ -81,10 +84,14 @@ class User:
 
     bars = ["PNL", "PCE", "CPI", "FOMC"]
 
-    def __init__(self, trades: Trade):
-        self.trades = trades
+    def __init__(self, api_key, api_secret):
         self.getreadskillbyprofit()
         self.getreadskillbytrades()
+
+    def getTrades_mexc(self):
+        test = mexc.get_history_orders()
+        self.trades = test
+        return self.trades
 
     def new_trade(self, trade):
         if isinstance(trade, Trade):
