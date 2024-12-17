@@ -10,16 +10,16 @@ SECRET_KEY = '6d73718cedc3423e9fb1217204b5d38e'
 
 
 def _get_server_time():
-    return int(time.time()*1000)
+    return int(time.time() * 1000)
 
 
-def _sign_v1(api_key, api_secret, sign_params=None ):
+def _sign_v1(api_key, api_secret, sign_params=None):
     if sign_params:
         sign = "%s%s%s" % (api_key, _get_server_time(), sign_params)
     else:
-        sign = "%s%s" % (API_KEY, _get_server_time())
+        sign = "%s%s" % (api_key, _get_server_time())
     sign = hmac.new(api_secret.encode('utf-8'), sign.encode('utf-8'),
-                      hashlib.sha256).hexdigest()
+                    hashlib.sha256).hexdigest()
     return sign
 
 
@@ -53,6 +53,8 @@ def get_depth(symbol, limit=None):
     url = f'{BASE_URL}/{path}'
     response = requests.request('GET', url)
     return response.json()
+
+
 # res = get_depth('ETH_USDT', 1)
 # print(res)
 
@@ -70,47 +72,53 @@ def get_kline(symbol, interval=None, start=None, end=None):
     url = f'{BASE_URL}/{path}'
     response = requests.request('GET', url)
     return response.json()
+
+
 # res = get_kline('ETH_USDT')
 # print(res)
 
 
-def get_account_assets(api_key,api_secret):
+def get_account_assets(api_key, api_secret):
     """get account information"""
     method = 'GET'
     path = '/api/v1/private/account/assets'
     url = '{}{}'.format(BASE_URL, path)
-    sign = _sign_v1(api_key,api_secret)
+    sign = _sign_v1(api_key, api_secret)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, headers=headers)
     return response.json()
+
+
 # res = get_account_assets()
 # print(res)
 
 
-def get_account_asset_currency(api_key,api_secret,currency):
+def get_account_asset_currency(api_key, api_secret, currency):
     """get account information"""
     method = 'GET'
     path = '/api/v1/private/account/asset/' + currency
     url = '{}{}'.format(BASE_URL, path)
-    sign = _sign_v1(api_key,api_secret)
+    sign = _sign_v1(api_key, api_secret)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, headers=headers)
     return response.json()
+
+
 # res = get_account_asset_currency(currency='USDT')
 # print(res)
 
 
-def history_positions(api_key,api_secret,page_num, page_size=None, symbol=None):
+def history_positions(api_key, api_secret, page_num, page_size=None, symbol=None):
     """get history positions"""
     method = 'GET'
     path = '/api/v1/private/position/list/history_positions'
@@ -123,9 +131,9 @@ def history_positions(api_key,api_secret,page_num, page_size=None, symbol=None):
     if symbol:
         data_original = {"symbol": symbol}
     data = '&'.join('{}={}'.format(i, data_original[i]) for i in sorted(data_original))
-    sign = _sign_v1(api_key,api_secret, sign_params=data)
+    sign = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
@@ -133,11 +141,13 @@ def history_positions(api_key,api_secret,page_num, page_size=None, symbol=None):
     url = "%s%s%s" % (url, "?", data)
     response = requests.request(method, url, headers=headers)
     return response.json()
+
+
 # res = history_positions(page_num=1, symbol="BTC_USDT")
 # print(res)
 
 
-def get_open_positions(api_key,api_secret,symbol=None):
+def get_open_positions(api_key, api_secret, symbol=None):
     """get Open Positions"""
     method = 'GET'
     path = '/api/v1/private/position/open_positions'
@@ -147,9 +157,9 @@ def get_open_positions(api_key,api_secret,symbol=None):
     else:
         data_original = {}
     data = '&'.join('{}={}'.format(i, data_original[i]) for i in sorted(data_original))
-    sign = _sign_v1(api_key,api_secret, sign_params=data)
+    sign = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
@@ -157,11 +167,13 @@ def get_open_positions(api_key,api_secret,symbol=None):
     url = "%s%s%s" % (url, "?", data)
     response = requests.request(method, url, headers=headers)
     return response.json()
+
+
 # res = get_open_positions(symbol="BTC_USDT")
 # print(res)
 
 
-def get_position_funding_records(api_key,api_secret,page_num=None, page_size=None, symbol=None, position_id=None):
+def get_position_funding_records(api_key, api_secret, page_num=None, page_size=None, symbol=None, position_id=None):
     """get funding records"""
     method = 'GET'
     path = '/api/v1/private/position/funding_records'
@@ -176,20 +188,22 @@ def get_position_funding_records(api_key,api_secret,page_num=None, page_size=Non
     if position_id:
         data_original.update({'position_id': position_id})
     data = '&'.join('{}={}'.format(i, data_original[i]) for i in sorted(data_original))
-    sign = _sign_v1(api_key,api_secret,sign_params=data)
+    sign = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, params=data, headers=headers)
     return response.json()
+
+
 # res = get_position_funding_records()
 # print(res)
 
 
-def get_open_orders(api_key,api_secret,page_num=None, page_size=None, symbol=None):
+def get_open_orders(api_key, api_secret, page_num=None, page_size=None, symbol=None):
     """get Open Orders"""
     method = 'GET'
     path = '/api/v1/private/order/list/open_orders'
@@ -202,20 +216,23 @@ def get_open_orders(api_key,api_secret,page_num=None, page_size=None, symbol=Non
     if symbol:
         data_original.update({'symbol': symbol})
     data = '&'.join('{}={}'.format(i, data_original[i]) for i in sorted(data_original))
-    sign = _sign_v1(api_key,api_secret,sign_params=data)
+    sign = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, params=data, headers=headers)
     return response.json()
+
+
 # res = get_open_orders(symbol="ETH_USDT")
 # print(res)
 
 
-def get_history_orders(api_key, api_secret, page_num=None, page_size=None, symbol=None, states=None, category=None, start_time=None, end_time=None, side=None):
+def get_history_orders(api_key, api_secret, page_num=None, page_size=None, symbol=None, states=None, category=None,
+                       start_time=None, end_time=None, side=None):
     """get History Orders"""
     method = 'GET'
     path = '/api/v1/private/order/list/history_orders'
@@ -240,18 +257,20 @@ def get_history_orders(api_key, api_secret, page_num=None, page_size=None, symbo
     data = '&'.join('{}={}'.format(i, data_original[i]) for i in sorted(data_original))
     sign = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, params=data, headers=headers)
     return response.json()
+
+
 # res = get_history_orders(symbol="BTC_USDT")
 # print(res)
 
 
-def get_orders_by_external(api_key,api_secret,symbol, external_oid):
+def get_orders_by_external(api_key, api_secret, symbol, external_oid):
     """get orders by external_id"""
     method = 'GET'
     path = '/api/v1/private/order/external'
@@ -261,38 +280,42 @@ def get_orders_by_external(api_key,api_secret,symbol, external_oid):
         'external_oid': external_oid
     }
     data = '&'.join('{}={}'.format(i, data_original[i]) for i in sorted(data_original))
-    sign = _sign_v1(api_key,api_secret,sign_params=data)
+    sign = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, params=data, headers=headers)
     return response.json()
+
+
 # res = get_orders_by_external(symbol="ETH_USDT", external_oid="xxx")
 # print(res)
 
 
-def get_orders_by_orderId(api_key,api_secret,order_id):
+def get_orders_by_orderId(api_key, api_secret, order_id):
     """get orders by order_id"""
     method = 'GET'
     path = '/api/v1/private/order/get/' + order_id
     url = '{}{}'.format(BASE_URL, path)
-    sign = _sign_v1(api_key,api_secret)
+    sign = _sign_v1(api_key, api_secret)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, headers=headers)
     return response.json()
+
+
 # res = get_orders_by_orderId(order_id="xxx")
 # print(res)
 
 
-def get_orders_deals(api_key,api_secret, symbol, page_num=None, page_size=None, start_time=None, end_time=None):
+def get_orders_deals(api_key, api_secret, symbol, page_num=None, page_size=None, start_time=None, end_time=None):
     """get order deals"""
     method = 'GET'
     path = '/api/v1/private/order/list/order_deals'
@@ -309,21 +332,24 @@ def get_orders_deals(api_key,api_secret, symbol, page_num=None, page_size=None, 
     if end_time:
         data_original.update({'end_time': end_time})
     data = '&'.join('{}={}'.format(i, data_original[i]) for i in sorted(data_original))
-    sign = _sign_v1(api_key,api_secret,sign_params=data)
+    sign = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": sign,
         "Content-Type": "application/json"
     }
     response = requests.request(method, url, params=data, headers=headers)
     return response.json()
+
+
 # res = get_orders_deals(symbol="ETH_USDT")
 # print(res)
 
 
 # under maintenance
-def post_place(api_key,api_secret,symbol, price, vol, side, type, openType, leverage=None, positionId=None, externalOid=None, stopLossPrice=None, takeProfitPrice=None, positionMode=None, reduceOnlt=None):
+def post_place(api_key, api_secret, symbol, price, vol, side, type, openType, leverage=None, positionId=None,
+               externalOid=None, stopLossPrice=None, takeProfitPrice=None, positionMode=None, reduceOnlt=None):
     """place new order"""
     method = 'POST'
     path = '/api/v1/private/order/submit'
@@ -351,9 +377,9 @@ def post_place(api_key,api_secret,symbol, price, vol, side, type, openType, leve
     if reduceOnlt:
         data_original.update({"reduceOnlt": reduceOnlt})
     data = json.dumps(data_original)
-    params = _sign_v1(api_key,api_secret,sign_params=data)
+    params = _sign_v1(api_key, api_secret, sign_params=data)
     headers = {
-        "ApiKey": API_KEY,
+        "ApiKey": api_key,
         "Request-Time": str(_get_server_time()),
         "Signature": params,
         "Content-Type": "application/json"
@@ -361,12 +387,15 @@ def post_place(api_key,api_secret,symbol, price, vol, side, type, openType, leve
     response = requests.request(
         method, url, data=data, headers=headers)
     return response.json()
+
+
 # res = post_place(symbol='BTC_USDT', price='20000', vol='1', side=1, type=1, openType=2)
 # print(res)
 
 
 def main():
-    print(dict(get_history_orders(1,4)))
+    pass
+
 
 if __name__ == '__main__':
     main()
