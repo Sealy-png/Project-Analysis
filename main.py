@@ -83,8 +83,12 @@ class User:
     bytrades = []
 
     bars = ["PNL", "PCE", "CPI", "FOMC"]
+    api_key = ""
+    api_secret = ""
 
     def __init__(self, api_key, api_secret):
+        self.api_key = api_key
+        self.api_secret = api_secret
         self.getreadskillbyprofit()
         self.getreadskillbytrades()
 
@@ -156,6 +160,7 @@ class User:
 
 
 def main():
+    """
     # rs1 - rs4 sind leere Listen für Gründe
     rs1 = []
     rs2 = []
@@ -211,7 +216,9 @@ def main():
     testuser.displaybyprofit()
 
     for trade in testuser.trades:
-        trade.getinfo()
+        trade.getinfo() """
+    testuser = User("mx0vglIoQqFLx6wZet","6d73718cedc3423e9fb1217204b5d38e")
+    print(mexc.get_history_orders(testuser.api_key, testuser.api_secret))
 
 
 if __name__ == '__main__':
