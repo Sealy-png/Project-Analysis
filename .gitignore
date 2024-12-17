@@ -1,3 +1,5 @@
 junk.py
 java
 tutorial.py
+*.pyc
+*.pyo
