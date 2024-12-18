@@ -1,6 +1,12 @@
 junk.py
 java
 tutorial.py
+<<<<<<< HEAD
 # Ignore Python bytecode and cache files
 __pycache__/
 *.py[cod]
+
+# Ignore virtual environment directories
+venv/
+.env/
+
