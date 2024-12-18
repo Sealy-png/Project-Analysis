@@ -43,9 +43,9 @@ def extract_trades(response):
 def main():
 
     testuser = user.User("mx0vglIoQqFLx6wZet","6d73718cedc3423e9fb1217204b5d38e")
-    trades = extract_trades(mexc.get_history_orders(testuser.api_key, testuser.api_secret))
-    #print(json.dumps(trades, indent = 2))
-    print(json.dumps(trades[0], indent=2))
+    print(mexc.get_history_orders(testuser.api_key, testuser.api_secret))
+    #print(json.dumps(trades, indent= 2))
+
 
 
 if __name__ == '__main__':

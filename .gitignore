@@ -1,3 +1,6 @@
 junk.py
 java
 tutorial.py
+# Ignore Python bytecode and cache files
+__pycache__/
+*.py[cod]
