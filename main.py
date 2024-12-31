@@ -1,5 +1,6 @@
 import mexc_api as mexc
 import User as user
+import datetime
 
 import json
 
@@ -38,26 +39,32 @@ def extract_trades(response):
     # funktion: average holding time
 
 
-
+#korrekter api call
+#trades = mexc.get_history_orders(testuser.api_key, testuser.api_secret, start_time='1733055283000', end_time= '1735647614000', page_size='100',)['data']
 
 def main():
 
-    testuser = user.User("mx0vglIoQqFLx6wZet","6d73718cedc3423e9fb1217204b5d38e")
-    print(mexc.get_history_orders(testuser.api_key, testuser.api_secret))
-    #print(json.dumps(trades, indent= 2))
+    testuser = user.User("mx0vglXSkzB80u1I6J","0316cee7fe904273990ee44f6c135b50")
+    trades = mexc.get_history_orders(testuser.api_key, testuser.api_secret, start_time='1733055283000', end_time= '1735647614000', page_size='100',)['data']
+    testtrades = []
+    liquids = mexc.get_open_positions(testuser.api_key, testuser.api_secret)['data']
+    #print(str(datetime.datetime.fromtimestamp(liquids[0]['createTime'] / 1000.0, tz=datetime.timezone.utc)) + "   ||   ", liquids[0])
 
+    for trade in trades:
+        #print(str(datetime.datetime.fromtimestamp(trade['createTime'] / 1000.0, tz=datetime.timezone.utc)) + " || " + str(trade['positionId']))
+        #print(trade['createTime'])
+        #print(json.dumps(trade, indent=2))
+        #if(trade['positionId'] == 624249170):
+        testtrades.append(trade)
+    n = 100
+    i=0
+    for trade in testtrades:
+        #print(str(trade['positionId']) + "  ||  " + str(datetime.datetime.fromtimestamp(trade['createTime'] / 1000.0, tz=datetime.timezone.utc)))
+        if(trade['positionId'] == 611556583 and trade['dealVol'] != 0):
+            print(str(datetime.datetime.fromtimestamp(trade['createTime'] / 1000.0, tz=datetime.timezone.utc)) + " || " + str(trade))
+        #i+=1
+    #print(i)
 
 
 if __name__ == '__main__':
     main()
-
-# Press the green button in the gutter to run the script.
-
-# hihihi
-# huhuhu
-# hohoho
-# hahaha
-# hehehee
-
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
